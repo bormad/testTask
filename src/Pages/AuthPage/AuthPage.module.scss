@@ -1,0 +1,18 @@
+.AuthPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  gap: 10px;
+}
+
+h2 {
+  color: var(--main-color-font);
+}

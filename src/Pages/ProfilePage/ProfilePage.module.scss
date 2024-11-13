@@ -1,0 +1,11 @@
+.ProfilePage {
+  padding-top: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  color: var(--main-color-font);
+  font-weight: bold;
+  font-size: 20px;
+}

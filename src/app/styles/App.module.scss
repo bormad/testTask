@@ -1,0 +1,15 @@
+@import "./variables/global.scss";
+
+.App {
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-color);
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Consolas, "Times New Roman", Serif;
+  box-sizing: border-box;
+}

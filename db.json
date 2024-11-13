@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "login": "anton",
+      "password": "qwerty123"
+    },
+    {
+      "id": 2,
+      "login": "user2",
+      "password": "password123"
+    },
+    {
+      "id": "d742",
+      "login": "vladimirtaraban",
+      "password": "123456"
+    },
+    {
+      "id": "80c3",
+      "login": "vladimirtaraban",
+      "password": "123456"
+    },
+    {
+      "id": "4d5d",
+      "login": "vladimirtaraban",
+      "password": "123456"
+    },
+    {
+      "id": "2c17",
+      "login": "vova",
+      "password": "123456"
+    },
+    {
+      "id": "8e26",
+      "login": "testModerator",
+      "password": "123456"
+    },
+    {
+      "id": "651d",
+      "login": "anton",
+      "password": "1111111"
+    },
+    {
+      "id": "ab69",
+      "login": "vladimirtaraban",
+      "password": "321321"
+    }
+  ]
+}
