@@ -47,6 +47,7 @@ export const RegPage = () => {
   const onSubmit = async ({ login, password }) => {
     try {
       await dispatch(registerUser({ login, password }));
+      reset();
       navigate("/main");
     } catch (err) {
       console.error(err);

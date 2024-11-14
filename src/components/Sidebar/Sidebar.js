@@ -1,17 +1,19 @@
 import styles from "./Sidebar.module.scss";
 
-import { Icon, MyLink, UserPanel } from "../../components";
+import { Button, Icon, MyLink, UserPanel } from "../../components";
 
 import sidebarIcon from "../../assets/icon/close-open-sidebar-icon.png";
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useUser } from "../../helpers";
+import { useDispatch } from "react-redux";
+import { openModal } from "../../redux/slices/modalSlice";
 
 export const Sidebar = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const userData =
-    useSelector((state) => state.userSlice.user) ||
-    sessionStorage.getItem("userData");
+  const user = useUser();
+  const userLogin = user.login;
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setIsVisible(!isVisible);
@@ -21,10 +23,14 @@ export const Sidebar = () => {
     <div
       className={`${styles.Sidebar} ${isVisible ? styles.open : styles.close}`}
     >
-      <MyLink to={userData ? "/profile" : "/"}>
-        <UserPanel />
-      </MyLink>
-      <Icon src={sidebarIcon} onClick={toggleSidebar} />
+      <div className={styles.Sidebar__header}>
+        <MyLink to={userLogin ? "/profile" : "/"}>
+          <UserPanel />
+        </MyLink>
+        <Icon src={sidebarIcon} onClick={toggleSidebar} />
+      </div>
+      <Button onClick={() => dispatch(openModal())}>Добавить проект</Button>
+      <MyLink to={"/main"}>Главная страница</MyLink>
     </div>
   );
 };

@@ -3,47 +3,132 @@
     {
       "id": 1,
       "login": "anton",
-      "password": "qwerty123"
+      "password": "qwerty123",
+      "projects": [
+        {
+          "id": 1,
+          "name": "first project",
+          "todos": [
+            {
+              "id": 1,
+              "title": "Сделать то то"
+            },
+            {
+              "id": 2,
+              "title": "Сделать что то другое"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 2,
-      "login": "user2",
-      "password": "password123"
+      "login": "maria",
+      "password": "password456",
+      "projects": [
+        {
+          "id": 2,
+          "name": "second project",
+          "todos": [
+            {
+              "id": 3,
+              "title": "Написать отчет"
+            },
+            {
+              "id": 4,
+              "title": "Подготовить презентацию"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "third project",
+          "todos": [
+            {
+              "id": 5,
+              "title": "Изучить новый фреймворк"
+            },
+            {
+              "id": 6,
+              "title": "Создать прототип приложения"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "d742",
+      "id": 3,
+      "login": "ivan",
+      "password": "mypassword789",
+      "projects": [
+        {
+          "id": 4,
+          "name": "fourth project",
+          "todos": [
+            {
+              "id": 7,
+              "title": "Сделать анализ данных"
+            },
+            {
+              "id": 8,
+              "title": "Подготовить отчет для клиента"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cb44",
       "login": "vladimirtaraban",
-      "password": "123456"
-    },
-    {
-      "id": "80c3",
-      "login": "vladimirtaraban",
-      "password": "123456"
-    },
-    {
-      "id": "4d5d",
-      "login": "vladimirtaraban",
-      "password": "123456"
-    },
-    {
-      "id": "2c17",
-      "login": "vova",
-      "password": "123456"
-    },
-    {
-      "id": "8e26",
-      "login": "testModerator",
-      "password": "123456"
-    },
-    {
-      "id": "651d",
-      "login": "anton",
-      "password": "1111111"
-    },
-    {
-      "id": "ab69",
-      "login": "vladimirtaraban",
-      "password": "321321"
+      "password": "123321",
+      "projects": [
+        {
+          "id": 1731580312792,
+          "name": "first project",
+          "todos": [
+            {
+              "id": 1731587325784,
+              "title": "321",
+              "completed": false
+            },
+            {
+              "id": 1731587331324,
+              "title": "123",
+              "completed": false
+            },
+            {
+              "id": 1731587338737,
+              "title": "222",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "id": 1731580524757,
+          "name": "first project11111",
+          "todos": []
+        },
+        {
+          "id": 1731580537396,
+          "name": "first project2222",
+          "todos": []
+        },
+        {
+          "id": 1731580546057,
+          "name": "first project3333",
+          "todos": []
+        },
+        {
+          "id": 1731580614687,
+          "name": "first project4444",
+          "todos": []
+        },
+        {
+          "id": 1731580629088,
+          "name": " 5544",
+          "todos": []
+        }
+      ]
     }
   ]
 }

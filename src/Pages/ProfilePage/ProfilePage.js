@@ -6,17 +6,12 @@ import logoutIcon from "../../assets/icon/logout.png";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../helpers";
 
 export const ProfilePage = () => {
-  const userData = sessionStorage.getItem("userData");
+  const user = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let user = {};
-
-  if (userData) {
-    const users = JSON.parse(userData);
-    user = users;
-  }
 
   const onClickLogout = () => {
     dispatch(logoutUser());

@@ -2,10 +2,9 @@ import styles from "./AuthPage.module.scss";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchUser } from "../../redux/slices/userSlice";
 import { Button, Input } from "../../components";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const authFormShema = yup.object().shape({
@@ -37,20 +36,18 @@ export const AuthPage = () => {
     resolver: yupResolver(authFormShema),
   });
 
-  const user = useSelector((state) => state.userSlice.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async ({ login, password }) => {
     try {
       await dispatch(fetchUser({ login, password }));
+      reset();
       navigate("/main");
     } catch (err) {
       console.error(err);
     }
   };
-
-  console.log(user);
 
   return (
     <div className={styles.AuthPage}>

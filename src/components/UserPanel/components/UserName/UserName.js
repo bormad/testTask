@@ -1,21 +1,9 @@
+import { useUser } from "../../../../helpers";
 import styles from "./UserName.module.scss";
-import { useSelector } from "react-redux";
 
 export const UserName = () => {
-  const userFromRedux = useSelector((state) => state.userSlice.user);
-  const userData = sessionStorage.getItem("userData");
-
-  let userLogin = "";
-
-  if (userFromRedux) {
-    userLogin = userFromRedux.login;
-  }
-
-  if (userData) {
-    console.log(userData);
-    const users = JSON.parse(userData);
-    userLogin = users.login;
-  }
+  const user = useUser();
+  const userLogin = user.login;
 
   return (
     <div className={styles.UserName}>{userLogin ? userLogin : "login"}</div>
