@@ -23,12 +23,7 @@ const authFormShema = yup.object().shape({
 });
 
 export const AuthPage = () => {
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       login: "anton",
       password: "qwerty123",

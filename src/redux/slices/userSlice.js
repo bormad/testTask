@@ -1,115 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-export const fetchUser = createAsyncThunk(
-  "user/fetchUser",
-  async ({ login, password }) => {
-    try {
-      const response = await axios.get("http://localhost:3001/users", {
-        params: {
-          login,
-          password,
-        },
-      });
-      if (response.data.error) {
-        throw response.data.error;
-      }
-      sessionStorage.setItem("userData", JSON.stringify(response.data[0]));
-      return response.data[0];
-    } catch (error) {
-      return initialState;
-    }
-  }
-);
-
-export const registerUser = createAsyncThunk(
-  "user/registerUser",
-  async ({ login, password }) => {
-    try {
-      const response = await axios.post("http://localhost:3001/users", {
-        login,
-        password,
-        projects: [],
-      });
-      if (response.data.error) {
-        throw response.data.error;
-      }
-      sessionStorage.setItem("userData", JSON.stringify(response.data));
-      return response.data;
-    } catch (error) {
-      return initialState;
-    }
-  }
-);
-
-export const addProjectToServer = createAsyncThunk(
-  "user/addProjectToServer",
-  async ({ userId, project }, { dispatch }) => {
-    try {
-      const userData = sessionStorage.getItem("userData");
-      const user = JSON.parse(userData);
-
-      const existingProjects = user.projects || [];
-      const updatedProjects = [...existingProjects, project];
-
-      const response = await axios.patch(
-        `http://localhost:3001/users/${userId}`,
-        {
-          projects: updatedProjects,
-        }
-      );
-
-      if (response.data.error) {
-        throw response.data.error;
-      }
-
-      dispatch(fetchUser({ login: user.login, password: user.password }));
-
-      return response.data;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-);
-
-export const addTodoToProject = createAsyncThunk(
-  "user/addTodoToProject",
-  async ({ userId, projectId, todo }, { dispatch }) => {
-    try {
-      const userData = sessionStorage.getItem("userData");
-      const user = JSON.parse(userData);
-      const project = user.projects.find(
-        (proj) => proj.id === Number(projectId)
-      );
-      if (!project) {
-        throw new Error("Project not found");
-      }
-
-      const updatedTodos = [...project.todos, todo];
-
-      const response = await axios.patch(
-        `http://localhost:3001/users/${userId}`,
-        {
-          projects: user.projects.map((proj) =>
-            proj.id === Number(projectId)
-              ? { ...proj, todos: updatedTodos }
-              : proj
-          ),
-        }
-      );
-
-      if (response.data.error) {
-        throw response.data.error;
-      }
-
-      dispatch(fetchUser({ login: user.login, password: user.password }));
-
-      return response.data;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-);
+import { handleError, saveUserData, updateUser } from "../../helpers";
 
 const initialState = {
   user: {
@@ -117,32 +8,166 @@ const initialState = {
     login: null,
     projects: [],
   },
-  loading: false,
-  error: null,
 };
+
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",
+  async ({ login, password }) => {
+    const response = await axios.get("http://localhost:3001/users", {
+      params: { login, password },
+    });
+    handleError(response);
+    saveUserData(response.data[0]);
+    return response.data[0];
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async ({ login, password }) => {
+    const response = await axios.post("http://localhost:3001/users", {
+      login,
+      password,
+      projects: [],
+    });
+    handleError(response);
+    saveUserData(response.data);
+    return response.data;
+  }
+);
+
+export const addProjectToServer = createAsyncThunk(
+  "user/addProjectToServer",
+  async ({ user, project }, { dispatch }) => {
+    const updatedProjects = [...user.projects, project];
+
+    const response = await axios.patch(
+      `http://localhost:3001/users/${user.id}`,
+      { projects: updatedProjects }
+    );
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return response.data;
+  }
+);
+
+export const deleteProject = createAsyncThunk(
+  "user/deleteProject",
+  async ({ user, projectId }, { dispatch }) => {
+    const updatedProjects = user.projects.filter(
+      (proj) => proj.id !== Number(projectId)
+    );
+
+    const response = await axios.patch(
+      `http://localhost:3001/users/${user.id}`,
+      { projects: updatedProjects }
+    );
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return projectId;
+  }
+);
+
+export const addTodoToProject = createAsyncThunk(
+  "user/addTodoToProject",
+  async ({ user, projectId, todo }, { dispatch }) => {
+    const project = user.projects.find((proj) => proj.id === Number(projectId));
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    const updatedTodos = [...project.todos, todo];
+
+    const response = await axios.patch(
+      `http://localhost:3001/users/${user.id}`,
+      {
+        projects: user.projects.map((proj) =>
+          proj.id === Number(projectId)
+            ? { ...proj, todos: updatedTodos }
+            : proj
+        ),
+      }
+    );
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return response.data;
+  }
+);
+
+export const toggleTodoCompletion = createAsyncThunk(
+  "user/toggleTodoCompletion",
+  async ({ user, projectId, todoId }, { dispatch }) => {
+    const project = user.projects.find((proj) => proj.id === Number(projectId));
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    const updatedTodos = project.todos.map((todo) =>
+      todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+    );
+
+    const response = await axios.patch(
+      `http://localhost:3001/users/${user.id}`,
+      {
+        projects: user.projects.map((proj) =>
+          proj.id === Number(projectId)
+            ? { ...proj, todos: updatedTodos }
+            : proj
+        ),
+      }
+    );
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return response.data;
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "user/deleteTodo",
+  async ({ user, projectId, todoId }, { dispatch }) => {
+    const project = user.projects.find((proj) => proj.id === Number(projectId));
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    const updatedTodos = project.todos.filter((todo) => todo.id !== todoId);
+
+    const response = await axios.patch(
+      `http://localhost:3001/users/${user.id}`,
+      {
+        projects: user.projects.map((proj) =>
+          proj.id === Number(projectId)
+            ? { ...proj, todos: updatedTodos }
+            : proj
+        ),
+      }
+    );
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return { projectId, todoId };
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     logoutUser(state) {
-      state.user = initialState;
+      state.user = initialState.user;
       sessionStorage.removeItem("userData");
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.loading = false;
         state.user = action.payload;
-      })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -159,3 +184,10 @@ const userSlice = createSlice({
 export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;
+
+/*
+Надо узнать насчет 
+    updateUser(dispatch, user);
+и 
+extraReducers
+*/

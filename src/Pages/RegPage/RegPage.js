@@ -27,12 +27,7 @@ const regFormShema = yup.object().shape({
 });
 
 export const RegPage = () => {
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       login: "",
       password: "",

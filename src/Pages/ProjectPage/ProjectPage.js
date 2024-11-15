@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../helpers";
 import styles from "./ProjectPage.module.scss";
 import { useForm } from "react-hook-form";
-import { Button, Input } from "../../components";
+import { Button, Input, ToDoList, ToDoItem } from "../../components";
 import { useDispatch } from "react-redux";
-import { addTodoToProject } from "../../redux/slices/userSlice";
+import { addTodoToProject, deleteProject } from "../../redux/slices/userSlice";
 
 export const ProjectPage = () => {
   const {
@@ -20,6 +20,7 @@ export const ProjectPage = () => {
   const user = useUser();
   const { id: projectId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const project = user.projects.find((proj) => proj.id === Number(projectId));
 
@@ -30,10 +31,16 @@ export const ProjectPage = () => {
       completed: false,
     };
 
-    dispatch(addTodoToProject({ userId: user.id, projectId, todo: newTodo }));
+    dispatch(addTodoToProject({ user, projectId, todo: newTodo }));
 
     reset();
   };
+
+  const handleDelete = () => {
+    dispatch(deleteProject({ user, projectId }));
+    navigate("/main");
+  };
+
   return (
     <div className={styles.ProjectPage}>
       <h1>{project.name}</h1>
@@ -45,6 +52,16 @@ export const ProjectPage = () => {
         />
         <Button type="submit">Добавить дело</Button>
       </form>
+
+      <ToDoList>
+        {project.todos.map(({ title, completed, id }) => (
+          <ToDoItem key={id} title={title} completed={completed} todoId={id} />
+        ))}
+      </ToDoList>
+
+      <Button onClick={handleDelete} className={styles.DeleteBtn}>
+        Удалить проект
+      </Button>
     </div>
   );
 };

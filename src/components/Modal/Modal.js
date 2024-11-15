@@ -4,8 +4,8 @@ import styles from "./Modal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "../Input/Input";
 import { Button } from "../Button/Button";
-import { addProjectToServer, fetchUser } from "../../redux/slices/userSlice";
-
+import { addProjectToServer } from "../../redux/slices/userSlice";
+import { useUser } from "../../helpers";
 export const Modal = () => {
   const {
     register,
@@ -19,17 +19,15 @@ export const Modal = () => {
   });
   const modalIsOpen = useSelector((state) => state.modalSlice.isOpen);
   const dispatch = useDispatch();
+  const user = useUser();
 
   const onSubmit = async ({ title }) => {
-    const userData = sessionStorage.getItem("userData");
-    const users = JSON.parse(userData);
-    const userId = users.id;
     const newProject = {
       id: Date.now(),
       name: title,
       todos: [],
     };
-    dispatch(addProjectToServer({ userId, project: newProject }));
+    dispatch(addProjectToServer({ user, project: newProject }));
     reset();
     dispatch(closeModal());
   };

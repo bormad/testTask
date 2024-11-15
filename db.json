@@ -1,28 +1,19 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "login": "anton",
       "password": "qwerty123",
       "projects": [
         {
-          "id": 1,
-          "name": "first project",
-          "todos": [
-            {
-              "id": 1,
-              "title": "Сделать то то"
-            },
-            {
-              "id": 2,
-              "title": "Сделать что то другое"
-            }
-          ]
+          "id": 1731678451639,
+          "name": "222",
+          "todos": []
         }
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "login": "maria",
       "password": "password456",
       "projects": [
@@ -57,7 +48,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "login": "ivan",
       "password": "mypassword789",
       "projects": [
@@ -82,47 +73,6 @@
       "login": "vladimirtaraban",
       "password": "123321",
       "projects": [
-        {
-          "id": 1731580312792,
-          "name": "first project",
-          "todos": [
-            {
-              "id": 1731587325784,
-              "title": "321",
-              "completed": false
-            },
-            {
-              "id": 1731587331324,
-              "title": "123",
-              "completed": false
-            },
-            {
-              "id": 1731587338737,
-              "title": "222",
-              "completed": false
-            }
-          ]
-        },
-        {
-          "id": 1731580524757,
-          "name": "first project11111",
-          "todos": []
-        },
-        {
-          "id": 1731580537396,
-          "name": "first project2222",
-          "todos": []
-        },
-        {
-          "id": 1731580546057,
-          "name": "first project3333",
-          "todos": []
-        },
-        {
-          "id": 1731580614687,
-          "name": "first project4444",
-          "todos": []
-        },
         {
           "id": 1731580629088,
           "name": " 5544",

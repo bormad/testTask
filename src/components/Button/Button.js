@@ -1,8 +1,8 @@
 import styles from "./Button.module.scss";
 
-export const Button = ({ children, ...props }) => {
+export const Button = ({ children, className, ...props }) => {
   return (
-    <button className={styles.Button} {...props}>
+    <button className={`${styles.Button} ${className}`} {...props}>
       {children}
     </button>
   );
