@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { handleError, saveUserData, updateUser } from "../../helpers";
+import { handleError, saveUserData, updateUser, API_URL } from "../../helpers";
 
 const initialState = {
   user: {
@@ -13,7 +13,7 @@ const initialState = {
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async ({ login, password }) => {
-    const response = await axios.get("http://localhost:3001/users", {
+    const response = await axios.get(API_URL, {
       params: { login, password },
     });
     handleError(response);
@@ -25,7 +25,7 @@ export const fetchUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async ({ login, password }) => {
-    const response = await axios.post("http://localhost:3001/users", {
+    const response = await axios.post(API_URL, {
       login,
       password,
       projects: [],
@@ -41,10 +41,9 @@ export const addProjectToServer = createAsyncThunk(
   async ({ user, project }, { dispatch }) => {
     const updatedProjects = [...user.projects, project];
 
-    const response = await axios.patch(
-      `http://localhost:3001/users/${user.id}`,
-      { projects: updatedProjects }
-    );
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: updatedProjects,
+    });
 
     handleError(response);
     updateUser(dispatch, user);
@@ -59,10 +58,9 @@ export const deleteProject = createAsyncThunk(
       (proj) => proj.id !== Number(projectId)
     );
 
-    const response = await axios.patch(
-      `http://localhost:3001/users/${user.id}`,
-      { projects: updatedProjects }
-    );
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: updatedProjects,
+    });
 
     handleError(response);
     updateUser(dispatch, user);
@@ -80,16 +78,11 @@ export const addTodoToProject = createAsyncThunk(
 
     const updatedTodos = [...project.todos, todo];
 
-    const response = await axios.patch(
-      `http://localhost:3001/users/${user.id}`,
-      {
-        projects: user.projects.map((proj) =>
-          proj.id === Number(projectId)
-            ? { ...proj, todos: updatedTodos }
-            : proj
-        ),
-      }
-    );
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: user.projects.map((proj) =>
+        proj.id === Number(projectId) ? { ...proj, todos: updatedTodos } : proj
+      ),
+    });
 
     handleError(response);
     updateUser(dispatch, user);
@@ -110,16 +103,11 @@ export const toggleTodoCompletion = createAsyncThunk(
       todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
     );
 
-    const response = await axios.patch(
-      `http://localhost:3001/users/${user.id}`,
-      {
-        projects: user.projects.map((proj) =>
-          proj.id === Number(projectId)
-            ? { ...proj, todos: updatedTodos }
-            : proj
-        ),
-      }
-    );
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: user.projects.map((proj) =>
+        proj.id === Number(projectId) ? { ...proj, todos: updatedTodos } : proj
+      ),
+    });
 
     handleError(response);
     updateUser(dispatch, user);
@@ -138,16 +126,11 @@ export const deleteTodo = createAsyncThunk(
 
     const updatedTodos = project.todos.filter((todo) => todo.id !== todoId);
 
-    const response = await axios.patch(
-      `http://localhost:3001/users/${user.id}`,
-      {
-        projects: user.projects.map((proj) =>
-          proj.id === Number(projectId)
-            ? { ...proj, todos: updatedTodos }
-            : proj
-        ),
-      }
-    );
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: user.projects.map((proj) =>
+        proj.id === Number(projectId) ? { ...proj, todos: updatedTodos } : proj
+      ),
+    });
 
     handleError(response);
     updateUser(dispatch, user);
@@ -184,10 +167,3 @@ const userSlice = createSlice({
 export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;
-
-/*
-Надо узнать насчет 
-    updateUser(dispatch, user);
-и 
-extraReducers
-*/

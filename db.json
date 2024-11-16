@@ -4,13 +4,7 @@
       "id": "1",
       "login": "anton",
       "password": "qwerty123",
-      "projects": [
-        {
-          "id": 1731678451639,
-          "name": "222",
-          "todos": []
-        }
-      ]
+      "projects": []
     },
     {
       "id": "2",
@@ -79,6 +73,12 @@
           "todos": []
         }
       ]
+    },
+    {
+      "id": "cf02",
+      "login": "vova",
+      "password": "123321",
+      "projects": []
     }
   ]
 }

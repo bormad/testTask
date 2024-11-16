@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../redux/slices/userSlice";
-import { Button, Input } from "../../components";
+import { Button, Input, MyLink } from "../../components";
 import { useNavigate } from "react-router-dom";
 
 const authFormShema = yup.object().shape({
@@ -55,6 +55,10 @@ export const AuthPage = () => {
           {...register("password")}
         />
         <Button type="submit">Авторизоваться</Button>
+
+        <Button>
+          <MyLink to={"/register"}>Зарегистрироваться</MyLink>
+        </Button>
       </form>
     </div>
   );

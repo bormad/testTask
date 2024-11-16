@@ -29,8 +29,14 @@ export const Sidebar = () => {
         </MyLink>
         <Icon src={sidebarIcon} onClick={toggleSidebar} />
       </div>
-      <Button onClick={() => dispatch(openModal())}>Добавить проект</Button>
       <MyLink to={"/main"}>Главная страница</MyLink>
+
+      <Button
+        className={styles.Sidebar__Btn}
+        onClick={() => dispatch(openModal())}
+      >
+        Добавить проект
+      </Button>
     </div>
   );
 };
