@@ -2,17 +2,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../helpers";
 import styles from "./ProjectPage.module.scss";
 import { useForm } from "react-hook-form";
-import { Button, Input, ToDoList, ToDoItem } from "../../components";
+import { Button, Input, ToDoList, ToDoItem, Icon, H1 } from "../../components";
 import { useDispatch } from "react-redux";
 import { addTodoToProject, deleteProject } from "../../redux/slices/userSlice";
+import editIcon from "../../assets/icon/editIcon.png";
+import { openModal } from "../../redux/slices/modalSlice";
 
 export const ProjectPage = () => {
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       title: "",
     },
@@ -43,7 +40,16 @@ export const ProjectPage = () => {
 
   return (
     <div className={styles.ProjectPage}>
-      <h1>{project.name}</h1>
+      <H1>
+        {project.name}{" "}
+        <Icon
+          miniIcon
+          src={editIcon}
+          onClick={() =>
+            dispatch(openModal({ modalType: "editProject", id: projectId }))
+          }
+        />
+      </H1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"

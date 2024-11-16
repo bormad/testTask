@@ -4,8 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../redux/slices/userSlice";
-import { Button, Input, MyLink } from "../../components";
+import { Button, Input, MyLink, H1 } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react"; // Импортируем useState
 
 const authFormShema = yup.object().shape({
   login: yup
@@ -23,7 +24,12 @@ const authFormShema = yup.object().shape({
 });
 
 export const AuthPage = () => {
-  const { register, reset, handleSubmit } = useForm({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       login: "anton",
       password: "qwerty123",
@@ -33,6 +39,7 @@ export const AuthPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [authError, setAuthError] = useState("");
 
   const onSubmit = async ({ login, password }) => {
     try {
@@ -40,25 +47,33 @@ export const AuthPage = () => {
       reset();
       navigate("/main");
     } catch (err) {
+      setAuthError("Неверный логин или пароль");
       console.error(err);
     }
   };
 
   return (
     <div className={styles.AuthPage}>
-      <h2>Авторизоваться</h2>
+      <H1>Авторизоваться</H1>
+      {authError && <p className={styles.error}>{authError}</p>}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input type="text" placeholder="Логин..." {...register("login")} />
+        {errors.login && <p className={styles.error}>{errors.login.message}</p>}
+
         <Input
           type="password"
           placeholder="Пароль..."
           {...register("password")}
         />
+        {errors.password && (
+          <p className={styles.error}>{errors.password.message}</p>
+        )}
+
         <Button type="submit">Авторизоваться</Button>
 
-        <Button>
-          <MyLink to={"/register"}>Зарегистрироваться</MyLink>
-        </Button>
+        <MyLink to={"/register"} decoration>
+          Зарегистрироваться
+        </MyLink>
       </form>
     </div>
   );

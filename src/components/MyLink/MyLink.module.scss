@@ -1,4 +1,10 @@
 .MyLink {
   text-decoration: none;
-  color: black;
+  color: var(--link-color);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+
+  &__decoration {
+    text-decoration: underline;
+  }
 }

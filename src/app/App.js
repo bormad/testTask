@@ -10,12 +10,14 @@ import {
   ErrorPage,
 } from "../Pages";
 import { Modal } from "../components/Modal/Modal";
+import { useUser } from "../helpers";
 
 export const App = () => {
+  const user = useUser();
   return (
     <div className={styles.App}>
       <Modal />
-      <Sidebar />
+      {user.id && <Sidebar />}
       <Routes>
         <Route path="/" element={<AuthPage />} />
         <Route path="/register" element={<RegPage />} />

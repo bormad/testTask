@@ -4,9 +4,9 @@
   cursor: pointer;
 }
 
-.trashIcon {
-  position: absolute;
-  right: 6px;
+.miniIcon {
   height: 20px;
   width: 20px;
+  margin: auto;
+  transform: translateY(-2px);
 }

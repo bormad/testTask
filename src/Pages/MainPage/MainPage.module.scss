@@ -1,12 +1,16 @@
 .MainPage {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 670px;
 }
 
 .wrapper {
-  position: relative;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 600px;
 }

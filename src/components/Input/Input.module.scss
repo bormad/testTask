@@ -1,6 +1,8 @@
 .Input {
-  height: 40px;
-  padding: 0 0 0 10px;
-  font-size: 18px;
-  border: 1px solid #000;
+  width: 100%;
+  text-align: center;
+  line-height: var(--line-height-m);
+  font-size: var(--font-size-m);
+  border: 1px solid var(--border-color);
+  background-color: var(--button-background-color);
 }

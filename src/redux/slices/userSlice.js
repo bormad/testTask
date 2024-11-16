@@ -12,13 +12,21 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async ({ login, password }) => {
-    const response = await axios.get(API_URL, {
-      params: { login, password },
-    });
-    handleError(response);
-    saveUserData(response.data[0]);
-    return response.data[0];
+  async ({ login, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_URL, {
+        params: { login, password },
+      });
+
+      if (!response.data || response.data.length === 0) {
+        return rejectWithValue("Неверный логин или пароль");
+      }
+
+      saveUserData(response.data[0]);
+      return response.data[0];
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Ошибка при авторизации");
+    }
   }
 );
 
@@ -40,6 +48,23 @@ export const addProjectToServer = createAsyncThunk(
   "user/addProjectToServer",
   async ({ user, project }, { dispatch }) => {
     const updatedProjects = [...user.projects, project];
+
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: updatedProjects,
+    });
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return response.data;
+  }
+);
+
+export const editProjectToServer = createAsyncThunk(
+  "user/editProjectToServer",
+  async ({ user, projectId, updatedProjectData }, { dispatch }) => {
+    const updatedProjects = user.projects.map((proj) =>
+      proj.id === Number(projectId) ? { ...proj, ...updatedProjectData } : proj
+    );
 
     const response = await axios.patch(`${API_URL}/${user.id}`, {
       projects: updatedProjects,
@@ -115,6 +140,31 @@ export const toggleTodoCompletion = createAsyncThunk(
   }
 );
 
+export const editTodoToServer = createAsyncThunk(
+  "user/editTodoToServer",
+  async ({ user, projectId, todoId, newTitle }, { dispatch }) => {
+    const project = user.projects.find((proj) => proj.id === Number(projectId));
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    const updatedTodos = project.todos.map((todo) =>
+      todo.id === todoId ? { ...todo, title: newTitle } : todo
+    );
+
+    const response = await axios.patch(`${API_URL}/${user.id}`, {
+      projects: user.projects.map((proj) =>
+        proj.id === Number(projectId) ? { ...proj, todos: updatedTodos } : proj
+      ),
+    });
+
+    handleError(response);
+    updateUser(dispatch, user);
+    return response.data;
+  }
+);
+
 export const deleteTodo = createAsyncThunk(
   "user/deleteTodo",
   async ({ user, projectId, todoId }, { dispatch }) => {
@@ -143,8 +193,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logoutUser(state) {
-      state.user = initialState.user;
       sessionStorage.removeItem("userData");
+      state.user = initialState.user;
     },
   },
   extraReducers: (builder) => {
@@ -156,6 +206,12 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(addProjectToServer.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(editProjectToServer.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(editTodoToServer.fulfilled, (state, action) => {
         state.user = action.payload;
       })
       .addCase(addTodoToProject.fulfilled, (state, action) => {

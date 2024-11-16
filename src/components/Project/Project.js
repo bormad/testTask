@@ -5,7 +5,7 @@ export const Project = ({ projectName }) => {
 
   return (
     <div className={styles.Project} onClick={onClickProject}>
-      {projectName}
+      {projectName} <div>{">"}</div>
     </div>
   );
 };

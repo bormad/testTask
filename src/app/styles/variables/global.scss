@@ -1,5 +1,20 @@
 :root {
+  // Цвета
   --main-color: #2c2c2c;
   --main-color-sidebar: #6b6b6b;
+  --main-color-hover: #494949;
   --main-color-font: #d1d1d1;
+  --button-background-color: #eee;
+  --border-color: #000;
+  --link-color: #000;
+  //Размеры шрифтов
+
+  --font-size-s: 12px;
+
+  --font-size-m: 18px;
+  --line-height-m: 28px;
+
+  // Размеры модалки
+  --modal-width: 400px;
+  --modal-height: 150px;
 }

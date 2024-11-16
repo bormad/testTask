@@ -1,9 +1,5 @@
-import styles from "./ErrorPage.module.scss";
+import { H1 } from "../../components";
 
 export const ErrorPage = () => {
-  return (
-    <div className={styles.ErrorPage}>
-      <h1>Упс... Такой страницы не существует</h1>
-    </div>
-  );
+  return <H1>Упс... Такой страницы не существует</H1>;
 };

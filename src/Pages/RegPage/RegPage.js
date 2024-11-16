@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../redux/slices/userSlice";
-import { Button, Input } from "../../components";
+import { Button, Input, MyLink } from "../../components";
 import { useNavigate } from "react-router-dom";
 
 const regFormShema = yup.object().shape({
@@ -66,6 +66,9 @@ export const RegPage = () => {
           autoComplete="new-password"
         />
         <Button type="submit">Зарегистрироваться</Button>
+        <MyLink to={"/"} decoration>
+          Авторизоваться
+        </MyLink>
       </form>
     </div>
   );

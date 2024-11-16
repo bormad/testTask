@@ -4,37 +4,51 @@ import styles from "./Modal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "../Input/Input";
 import { Button } from "../Button/Button";
-import { addProjectToServer } from "../../redux/slices/userSlice";
+import {
+  addProjectToServer,
+  editProjectToServer,
+} from "../../redux/slices/userSlice";
 import { useUser } from "../../helpers";
+
 export const Modal = () => {
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       title: "",
     },
   });
-  const modalIsOpen = useSelector((state) => state.modalSlice.isOpen);
+  const {
+    isOpen,
+    modalType,
+    id: projectId,
+  } = useSelector((state) => state.modalSlice);
   const dispatch = useDispatch();
   const user = useUser();
-
   const onSubmit = async ({ title }) => {
-    const newProject = {
-      id: Date.now(),
-      name: title,
-      todos: [],
-    };
-    dispatch(addProjectToServer({ user, project: newProject }));
+    if (modalType === "createProject") {
+      const newProject = {
+        id: Date.now(),
+        name: title,
+        todos: [],
+      };
+      dispatch(addProjectToServer({ user, project: newProject }));
+    }
+
+    if (modalType === "editProject") {
+      const updatedProjectData = {
+        name: title,
+      };
+      dispatch(editProjectToServer({ user, projectId, updatedProjectData }));
+    }
+
     reset();
     dispatch(closeModal());
   };
 
   return (
-    <div className={`${styles.Modal} ${modalIsOpen ? "" : styles.close}`}>
-      <div>Добавить проект</div>
+    <div className={`${styles.Modal} ${isOpen ? "" : styles.close}`}>
+      <div>
+        {modalType === "editProject" ? "Редактировать" : "Добавить"} проект
+      </div>
       <div className={styles.closeBtn} onClick={() => dispatch(closeModal())}>
         X
       </div>
@@ -44,7 +58,9 @@ export const Modal = () => {
           placeholder="Название проекта"
           {...register("title")}
         />
-        <Button type="submit">Создать проект</Button>
+        <Button type="submit">
+          {modalType === "editProject" ? "Редактировать" : "Добавить"} проект
+        </Button>
       </form>
     </div>
   );
