@@ -1,0 +1,20 @@
+services:
+  # React-приложение
+  - name: react-app
+    type: web
+    env: static
+    staticPublishPath: build
+    buildCommand: npm install && npm run build
+    envVars:
+      - key: NODE_VERSION
+        value: 16
+
+  # JSON-сервер
+  - name: json-server
+    type: web # Сервис для API также тип web
+    env: docker # Используем Docker окружение
+    plan: free # Бесплатный план
+    dockerfilePath: ./Dockerfile # Используем Docker для запуска json-server
+    envVars:
+      - key: PORT
+        value: 3001 # Указываем порт
