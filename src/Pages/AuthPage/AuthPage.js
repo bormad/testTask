@@ -31,8 +31,8 @@ export const AuthPage = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      login: "anton",
-      password: "qwerty123",
+      login: "",
+      password: "",
     },
     resolver: yupResolver(authFormShema),
   });
@@ -59,12 +59,12 @@ export const AuthPage = () => {
       <H1>Авторизоваться</H1>
       {authError && <p className={styles.error}>{authError}</p>}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Input type="text" placeholder="Логин..." {...register("login")} />
+        <Input type="text" placeholder="Введите логин" {...register("login")} />
         {errors.login && <p className={styles.error}>{errors.login.message}</p>}
 
         <Input
           type="password"
-          placeholder="Пароль..."
+          placeholder="Введите пароль"
           {...register("password")}
         />
         {errors.password && (

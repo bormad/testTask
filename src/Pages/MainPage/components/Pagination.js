@@ -1,6 +1,10 @@
 import styles from "./Pagination.module.scss";
 import { Button } from "../../../components";
 export const Pagination = ({ page, setPage, lastPage }) => {
+  if (lastPage <= 1) {
+    return null;
+  }
+
   return (
     <div className={styles.Pagination}>
       <Button disabled={page === 1} onClick={() => setPage(1)}>

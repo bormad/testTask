@@ -12,7 +12,7 @@ export const MainPage = () => {
 
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const projectsPerPage = 5;
+  const projectsPerPage = 10;
   const lastPage = Math.ceil(user.projects.length / projectsPerPage);
 
   const indexOfLastProject = page * projectsPerPage;

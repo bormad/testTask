@@ -66,15 +66,15 @@ export const RegPage = () => {
         <p className={styles.error}>{regError || errors.passcheck.message}</p>
       )}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Input type="text" placeholder="Логин..." {...register("login")} />
+        <Input type="text" placeholder="Введите логин" {...register("login")} />
         <Input
           type="password"
-          placeholder="Пароль..."
+          placeholder="Введите пароль"
           {...register("password")}
         />
         <Input
           type="password"
-          placeholder="Проверка пароля..."
+          placeholder="Повторите пароль"
           {...register("passcheck")}
           autoComplete="new-password"
         />
