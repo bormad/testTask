@@ -12,8 +12,7 @@ export function useUser() {
 
   if (userData) {
     const users = JSON.parse(userData);
-    user = users;
+    user = users[0];
   }
-
   return user;
 }

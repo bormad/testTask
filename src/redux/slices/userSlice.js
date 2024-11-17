@@ -8,6 +8,7 @@ const initialState = {
     login: null,
     projects: [],
   },
+  error: "",
 };
 
 export const fetchUser = createAsyncThunk(
@@ -17,30 +18,31 @@ export const fetchUser = createAsyncThunk(
       const response = await axios.get(API_URL, {
         params: { login, password },
       });
-
-      if (!response.data || response.data.length === 0) {
-        return rejectWithValue("Неверный логин или пароль");
-      }
-
-      saveUserData(response.data[0]);
+      handleError(response);
+      saveUserData(response.data);
       return response.data[0];
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Ошибка при авторизации");
+      return rejectWithValue(error.messagee);
     }
   }
 );
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
-  async ({ login, password }) => {
-    const response = await axios.post(API_URL, {
-      login,
-      password,
-      projects: [],
-    });
-    handleError(response);
-    saveUserData(response.data);
-    return response.data;
+  async ({ login, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(API_URL, {
+        login,
+        password,
+        projects: [],
+      });
+      handleError(response);
+      saveUserData([response.data]);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.messagee);
+    }
   }
 );
 

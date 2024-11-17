@@ -43,12 +43,14 @@ export const AuthPage = () => {
 
   const onSubmit = async ({ login, password }) => {
     try {
-      await dispatch(fetchUser({ login, password }));
-      reset();
+      const res = await dispatch(fetchUser({ login, password }));
+      if (res.error) {
+        throw new Error();
+      }
       navigate("/main");
+      reset();
     } catch (err) {
-      setAuthError("Неверный логин или пароль");
-      console.error(err);
+      return setAuthError("Неверный логин или пароль");
     }
   };
 

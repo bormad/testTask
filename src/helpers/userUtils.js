@@ -1,8 +1,9 @@
 import { fetchUser } from "../redux/slices/userSlice";
 
 export const handleError = (response) => {
-  if (response.data.error) {
-    throw new Error(response.data.error);
+  if (response.data.length === 0) {
+    console.log("код в handleError");
+    throw new Error("Произошкла ошибка");
   }
 };
 

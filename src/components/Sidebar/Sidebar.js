@@ -4,13 +4,23 @@ import { Icon, MyLink, UserPanel } from "../../components";
 
 import sidebarIcon from "../../assets/icon/close-open-sidebar-icon.png";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../helpers";
+import { useLocation } from "react-router-dom";
 
 export const Sidebar = () => {
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
   const user = useUser();
   const userLogin = user.login;
+
+  useEffect(() => {
+    if (location.pathname === "/" || location.pathname === "/register") {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+  }, [location.pathname]);
 
   const toggleSidebar = () => {
     setIsVisible(!isVisible);

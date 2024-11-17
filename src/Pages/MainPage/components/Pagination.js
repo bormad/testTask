@@ -14,7 +14,7 @@ export const Pagination = ({ page, setPage, lastPage }) => {
         disabled={page === lastPage}
         onClick={() => setPage((prev) => prev + 1)}
       >
-        Слудующая
+        Следующая
       </Button>
       <Button disabled={page === lastPage} onClick={() => setPage(lastPage)}>
         В конец

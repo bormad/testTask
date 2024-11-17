@@ -9,8 +9,8 @@ import { useState } from "react";
 
 export const MainPage = () => {
   const user = useUser();
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const projectsPerPage = 5;
   const lastPage = Math.ceil(user.projects.length / projectsPerPage);
@@ -35,7 +35,7 @@ export const MainPage = () => {
       </div>
       <Button
         className={styles.Sidebar__Btn}
-        onClick={() => dispatch(openModal("createProject"))}
+        onClick={() => dispatch(openModal({ modalType: "createProject" }))}
       >
         Добавить проект
       </Button>

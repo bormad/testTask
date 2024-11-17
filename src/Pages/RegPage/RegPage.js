@@ -4,8 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../redux/slices/userSlice";
-import { Button, Input, MyLink } from "../../components";
+import { Button, H1, Input, MyLink } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const regFormShema = yup.object().shape({
   login: yup
@@ -27,7 +28,12 @@ const regFormShema = yup.object().shape({
 });
 
 export const RegPage = () => {
-  const { register, reset, handleSubmit } = useForm({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       login: "",
       password: "",
@@ -38,20 +44,27 @@ export const RegPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [regError, setRegError] = useState("");
 
   const onSubmit = async ({ login, password }) => {
     try {
-      await dispatch(registerUser({ login, password }));
+      const res = await dispatch(registerUser({ login, password }));
       reset();
+      if (res.error) {
+        throw new Error();
+      }
       navigate("/main");
     } catch (err) {
-      console.error(err);
+      return setRegError("Пароли не совпадают");
     }
   };
 
   return (
     <div className={styles.RegPage}>
-      <h2>Регистрация</h2>
+      <H1>Регистрация</H1>
+      {(regError || errors.passcheck) && (
+        <p className={styles.error}>{regError || errors.passcheck.message}</p>
+      )}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input type="text" placeholder="Логин..." {...register("login")} />
         <Input

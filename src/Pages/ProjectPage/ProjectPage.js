@@ -34,8 +34,11 @@ export const ProjectPage = () => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteProject({ user, projectId }));
-    navigate("/main");
+    const confirmDelete = window.confirm("Вы точно хотите удалить проект?");
+    if (confirmDelete) {
+      dispatch(deleteProject({ user, projectId }));
+      navigate("/main");
+    }
   };
 
   return (

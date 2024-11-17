@@ -25,6 +25,7 @@ export const Modal = () => {
   const user = useUser();
   const onSubmit = async ({ title }) => {
     if (modalType === "createProject") {
+      console.log(title);
       const newProject = {
         id: Date.now(),
         name: title,
