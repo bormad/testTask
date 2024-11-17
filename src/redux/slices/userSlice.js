@@ -38,7 +38,6 @@ export const registerUser = createAsyncThunk(
       });
       handleError(response);
       saveUserData([response.data]);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.messagee);
